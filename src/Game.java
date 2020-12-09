@@ -39,16 +39,35 @@ public class Game implements Runnable {
 
         // Game board
         final GameBoard board = new GameBoard(status);
+        board.setLayout(new BorderLayout());
         frame.add(board, BorderLayout.CENTER);
 
         // Reset button
         JPanel control_panel = new JPanel();
         frame.add(control_panel, BorderLayout.SOUTH);
         
-        // Hit Button
+        JPanel playerCards = new JPanel();
         
         
+        JPanel dealerCards = new JPanel();
         
+        JLabel Card1 = new JLabel();
+        JLabel Card2 = new JLabel();
+        JLabel Card3 = new JLabel();
+        JLabel Card4 = new JLabel();
+        
+        playerCards.add(Card1);
+        playerCards.add(Card2);
+        
+        dealerCards.add(Card3);
+        dealerCards.add(Card4);
+
+        
+        
+
+        board.add(playerCards, BorderLayout.WEST);
+        board.add(dealerCards, BorderLayout.EAST);
+
 
         // Note here that when we add an action listener to the reset button, we define it as an
         // anonymous inner class that is an instance of ActionListener with its actionPerformed()

@@ -49,17 +49,13 @@ public class BlackJack {
     public void hit(Xhand person) {
         System.out.print("player: ");
         person.addCard(deck);
-        if (checkBust(person)) {
-            winCheck();
-        }
+        checkBust(person);
     }
     
-    public boolean checkBust(Xhand person) {
+    public void checkBust(Xhand person) {
             if(person.getVal() > 21) {
-                return true;
+                winCheck();
             }
-        
-        return false;
     }
     
     public boolean isAce(Xhand person) {
@@ -83,6 +79,10 @@ public class BlackJack {
 //        return "";
 //    }
     
+    public String toString(Xhand person) {
+        return person.toString();
+    }
+    
     
     public String winCheck() {
         deck.deckReset();
@@ -93,11 +93,11 @@ public class BlackJack {
 //        System.out.println("Dealer Score " + scoreD);
 
         
-        if (checkBust(player)) {
+        if (scoreP > 21) {
             return "You Lose";
         }
         
-        if (checkBust(dealer)) {
+        if (scoreD > 21) {
             return "You Win";
         }
         
