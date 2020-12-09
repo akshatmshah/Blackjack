@@ -57,8 +57,8 @@ public class GameBoard extends JPanel {
         // When this component has the keyboard focus, key events are handled by its key listener.
         setFocusable(true);
         
-        name = new Xhand();
-        dealer = new Xhand();
+        name = new Xhand(50, 250);
+        dealer = new Xhand(750, 250);
         counter = 0;
         
         bj = new BlackJack(name, dealer); // initializes model for the game
@@ -71,7 +71,7 @@ public class GameBoard extends JPanel {
         addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                updateStatus(); // updates the status JLabel
+//                updateStatus(); // updates the status JLabel
                 repaint(); // repaints the game board
             }
         });
@@ -90,40 +90,43 @@ public class GameBoard extends JPanel {
     public void start() {
         return;
     }
+
     
     public void hit() {
         if (counter == 1) {
             bj.hit(name);
         }
+        repaint();
     }
     
     public void stand() {
         if (counter == 1) {
             counter = 0;
             bj.newHandDealer(dealer);
-            System.out.println(bj.winCheck());
+            status.setText(bj.winCheck());
         }   
+        repaint();
     }
     
     public void deal() {
+        status.setText("");
         counter++;
         if (counter == 1) {
             bj.deal();
         }
-        status.setText("Player 1's Turn");
         repaint();
 
         // Makes sure this component has keyboard/mouse focus
         requestFocusInWindow();
     }
 
-    /**
-     * Updates the JLabel to reflect the current state of the game.
-     */
-    private void updateStatus() {
-        status.setText("test");
-        counter = 0;
-    }
+//    /**
+//     * Updates the JLabel to reflect the current state of the game.
+//     */
+//    private void updateStatus() {
+//        status.setText("test");
+//        counter = 0;
+//    }
 
     /**
      * Draws the game board.
@@ -138,7 +141,7 @@ public class GameBoard extends JPanel {
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
-        
+
         // Draws board grid
         g.drawLine(600, 0, 600, 1400);
         
@@ -147,7 +150,10 @@ public class GameBoard extends JPanel {
         g.drawString("Dealer", 650, 50);
         
         
-       
+        
+        name.draw(g);
+        
+        dealer.draw(g);
     }
 
     /**

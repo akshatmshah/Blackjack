@@ -23,7 +23,7 @@ public class Card {
     }
     
     public String toString() { 
-        return (getcardFace()+ " " + getSuit()+ " " + getValue() + ", " );
+        return (getcardFace()+ " " + getSuit() + " " + getValue());
     }
     
     
