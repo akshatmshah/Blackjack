@@ -33,40 +33,20 @@ public class Game implements Runnable {
 
         // Status panel
         final JPanel status_panel = new JPanel();
+        status_panel.setLayout(new BorderLayout());
         frame.add(status_panel, BorderLayout.NORTH);
         final JLabel status = new JLabel();
-        status_panel.add(status);
+        status_panel.add(status, BorderLayout.NORTH);
+        final JLabel score = new JLabel("High Score : 0 Wins 0 Loses");
+        status_panel.add(score, BorderLayout.CENTER);
 
         // Game board
-        final GameBoard board = new GameBoard(status);
-        board.setLayout(new BorderLayout());
+        final GameBoard board = new GameBoard(status, score);
         frame.add(board, BorderLayout.CENTER);
 
         // Reset button
         JPanel control_panel = new JPanel();
         frame.add(control_panel, BorderLayout.SOUTH);
-        
-        JPanel playerCards = new JPanel();
-        
-        
-        JPanel dealerCards = new JPanel();
-        
-        JLabel Card1 = new JLabel();
-        JLabel Card2 = new JLabel();
-        JLabel Card3 = new JLabel();
-        JLabel Card4 = new JLabel();
-        
-        playerCards.add(Card1);
-        playerCards.add(Card2);
-        
-        dealerCards.add(Card3);
-        dealerCards.add(Card4);
-
-        
-        
-
-        board.add(playerCards, BorderLayout.WEST);
-        board.add(dealerCards, BorderLayout.EAST);
 
 
         // Note here that when we add an action listener to the reset button, we define it as an

@@ -5,8 +5,10 @@
  */
 
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+//import java.awt.event.MouseAdapter;
+//import java.awt.event.MouseEvent;
+import java.util.LinkedList;
+
 import javax.swing.*;
 
 /**
@@ -30,25 +32,37 @@ public class GameBoard extends JPanel {
 
     private BlackJack bj; // model for the game
     private JLabel status; // current status text
+    private JLabel score;
     private Xhand name;
     private Xhand dealer;
     private int counter;
+    private int drawCounter;
     private String username;
 
-    // Game constants
     public static final int BOARD_WIDTH = 1200;
     public static final int BOARD_HEIGHT = 600;
 
     /**
      * Initializes the game board.
      */
-    public GameBoard(JLabel statusInit) {
-        
+    public GameBoard(JLabel statusInit, JLabel scoreInit) {
+        JOptionPane.showMessageDialog(null, "Welcome to Blackjack" + System.lineSeparator() +
+                "You want to beat the dealer's hand without going over 21. \nAll you know"
+                + " about the dealers hand is the first card (top left corner of game). \nYou"
+                + " will see your cards on the left side of the screen. \nAces can be either"
+                + " 1 or 11's, numerical cards are their numerical values, and face cards"
+                + " are worth 10. To begin the game you need to deal the cards. \nIf you want"
+                + " another card and take a risk to get closer to 21 in hopes of beating the"
+                + " dealer then you can press hit, otherwise you should stand. \nOnce your"
+                + " turn is over your score will be saved with your username, and you will"
+                + " see in the top left corner if you have won or lost.");
         username = JOptionPane.showInputDialog("Enter your username!");
         if (username.equals("")) {
             username = "Guest";
         }
         System.out.println(username);
+        
+        
         
         // creates border around the court area, JComponent method
         setBorder(BorderFactory.createLineBorder(Color.BLACK));
@@ -57,76 +71,64 @@ public class GameBoard extends JPanel {
         // When this component has the keyboard focus, key events are handled by its key listener.
         setFocusable(true);
         
-        name = new Xhand(50, 250);
-        dealer = new Xhand(750, 250);
+        name = new Xhand(0, 250);
+        dealer = new Xhand(600, 250);
         counter = 0;
+        drawCounter = 0;
         
-        bj = new BlackJack(name, dealer); // initializes model for the game
+        bj = new BlackJack(username, name, dealer); // initializes model for the game
         status = statusInit; // initializes the status JLabel
-
-        /*
-         * Listens for mouseclicks.  Updates the model, then updates the game board
-         * based off of the updated model.
-         */
-        addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-//                updateStatus(); // updates the status JLabel
-                repaint(); // repaints the game board
-            }
-        });
-        
-        
+        score = scoreInit;
     }
         
-    
-
-
-
-
     /**
      * (Re-)sets the game to its initial state.
      */
     public void start() {
-        return;
+        score.setText("Score: " + bj.getScores().get(0) 
+                + " Wins " + bj.getScores().get(1) + " Losses");
     }
 
     
     public void hit() {
         if (counter == 1) {
             bj.hit(name);
+            if (bj.checkBust(name)) {
+                stand();
+            }
+            repaint();
         }
-        repaint();
     }
     
     public void stand() {
         if (counter == 1) {
             counter = 0;
+            drawCounter++;
             bj.newHandDealer(dealer);
-            status.setText(bj.winCheck());
+            LinkedList<String> winAns = (LinkedList<String>) bj.winCheck();
+            status.setText(winAns.get(0));
+            score.setText(winAns.getLast());
+            bj.updateFile(username.toUpperCase());
+            repaint();
         }   
-        repaint();
+        
     }
     
     public void deal() {
-        status.setText("");
         counter++;
         if (counter == 1) {
             bj.deal();
+            status.setText("The dealer has a " + dealer.getCard(0).toString());
+            if((name.getVal() == 11 && name.checkAce()) || (dealer.getVal() == 11 
+                    && dealer.checkAce())) {
+                stand();
+            }
         }
         repaint();
 
         // Makes sure this component has keyboard/mouse focus
         requestFocusInWindow();
     }
-
-//    /**
-//     * Updates the JLabel to reflect the current state of the game.
-//     */
-//    private void updateStatus() {
-//        status.setText("test");
-//        counter = 0;
-//    }
 
     /**
      * Draws the game board.
@@ -140,6 +142,7 @@ public class GameBoard extends JPanel {
      */
     @Override
     public void paintComponent(Graphics g) {
+        g.clearRect(0,0, getWidth(),getHeight());
         super.paintComponent(g);
 
         // Draws board grid
@@ -149,11 +152,13 @@ public class GameBoard extends JPanel {
         
         g.drawString("Dealer", 650, 50);
         
-        
-        
         name.draw(g);
+        if (drawCounter == 1) {
+            dealer.draw(g);
+            drawCounter = 0;
+        }
         
-        dealer.draw(g);
+        
     }
 
     /**
