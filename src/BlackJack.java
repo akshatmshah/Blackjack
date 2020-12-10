@@ -58,7 +58,7 @@ public class BlackJack {
         return false;
     }
 
-    public List<Integer> getScores() {
+    public List<Integer> getScores() { //help display updated scores to GUI
         LinkedList<Integer> scores = new LinkedList<>();
 
         scores.add(win);
@@ -68,7 +68,7 @@ public class BlackJack {
     }
 
 
-    public void deal() {
+    public void deal() { //new round -> deal
         System.out.println("----------------------");
         player.setVal(0);
         dealer.setVal(0);
@@ -80,23 +80,21 @@ public class BlackJack {
         }
     }
 
-    public void hit(Xhand person) {
+    public void hit(Xhand person) { 
         System.out.print("player: ");
         person.addCard(deck);        
     }
 
-    public boolean checkBust(Xhand person) {
-        if(person.getVal() > 21) {
+    public boolean checkBust(Xhand person) { 
+        if(person.getVal() > 21) { //to check if they busted after each hit
             return true;
         }
         return false;
     }
 
-    public void newHandDealer(Xhand dealer) {
-
-
+    public void newHandDealer(Xhand dealer) { //dealer always hits on <= 16
         while (dealer.getVal() < 17) {
-            if (dealer.checkAce() && dealer.getVal() + 10 <= 21) {
+            if (dealer.checkAce() && dealer.getVal() + 10 <= 21) { //ace being used as 11
                 break;
             }
             dealer.addCard(deck);
@@ -110,8 +108,9 @@ public class BlackJack {
         List<String> data = new LinkedList<>();
         String returnString = null;
         
-        deck.deckReset();
+        deck.deckReset(); //add cards back in
 
+        //checking if one ace should be used as 11 or 1
         if (player.getVal() + 10 <= 21 && player.checkAce() == true) {
             player.setVal(player.getVal() + 10); 
         }
@@ -125,6 +124,7 @@ public class BlackJack {
 
         System.out.println(scoreP + " " + scoreD);
 
+        //eval final scores
         if (scoreP > 21) {
             lost +=1;
             returnString = "You Lose";
@@ -141,17 +141,19 @@ public class BlackJack {
         }else if (scoreP == scoreD){
             returnString = "Push";
         }  
-
+        
+        //return to update labels
         data.add(returnString);
         data.add("Score : " + win + " Wins " + lost + " Loses");
         return new LinkedList<>(data);
     }
 
+    //adding new player to txt
     public void newPlayer(String name) {
         try {
             FileWriter fw = new FileWriter("./files/highscores.txt", true);
             StringWriter writer = new StringWriter();
-            writer.write(name + " " + 0 + " " + 0);
+            writer.write(name + " " + 0 + " " + 0); //new player starts with 0 wins, 0 loses 
             fw.write(writer.toString() + System.lineSeparator());
             fw.flush();
             fw.close();
@@ -164,15 +166,16 @@ public class BlackJack {
 
     public void updateFile(String name) {
         try {
-            TreeMap<String, String> newLines = new TreeMap<>();
-
+          //storing name and corresponding w/l ratio
+            TreeMap<String, String> newLines = new TreeMap<>(); 
             BufferedReader bufferReader = new BufferedReader(
                     new FileReader("./files/highscores.txt"));
 
             String line = bufferReader.readLine();
 
             System.out.println("FIRST LINE: "+ line);
-
+            
+            //adding all the names, w/l to a map where those are key, value respectively
             while (line != null) {
                 String[] eachLine = line.split(" ");
                 newLines.put(eachLine[0], eachLine[1] + " " + eachLine[2]);
@@ -184,11 +187,13 @@ public class BlackJack {
             System.out.println("ENTRY1: " + newLines.entrySet());
             System.out.println("KEY1: " + newLines.keySet());
 
+            //changing the desired lines
             newLines.replace(name, win + " " + lost);
 
+            //del old file making new one (FileWriter does by default ig)
+            FileWriter fw = new FileWriter("./files/highscores.txt"); 
 
-            FileWriter fw = new FileWriter("./files/highscores.txt");
-
+            //readding them to new file with updated information
             for (Entry<String, String> entry : newLines.entrySet()) {
                 System.out.println("Key = " + entry.getKey() + ", Value = " + entry.getValue()); 
                 fw.write(entry.getKey() + " " + entry.getValue() + System.lineSeparator());

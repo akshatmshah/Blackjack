@@ -55,7 +55,11 @@ public class GameBoard extends JPanel {
                 + " another card and take a risk to get closer to 21 in hopes of beating the"
                 + " dealer then you can press hit, otherwise you should stand. \nOnce your"
                 + " turn is over your score will be saved with your username, and you will"
-                + " see in the top left corner if you have won or lost.");
+                + " see in the top left corner if you have won or lost. If you go over"
+                + "21 you lose!");
+        
+        //username can be anything -> NOT case sensitive
+        //if empty, then play under guest w/l.
         username = JOptionPane.showInputDialog("Enter your username!");
         if (username.equals("")) {
             username = "Guest";
@@ -71,11 +75,11 @@ public class GameBoard extends JPanel {
         // When this component has the keyboard focus, key events are handled by its key listener.
         setFocusable(true);
         
-        name = new Xhand(0, 250);
+        //intialize players
+        name = new Xhand(0, 250); //new hands with x, y coords
         dealer = new Xhand(600, 250);
-        counter = 0;
-        drawCounter = 0;
-        
+        counter = 0; //to make sure can only hit and stand after dealing
+        drawCounter = 0; //to help show dealers hand after standing.
         bj = new BlackJack(username, name, dealer); // initializes model for the game
         status = statusInit; // initializes the status JLabel
         score = scoreInit;
@@ -84,43 +88,43 @@ public class GameBoard extends JPanel {
     /**
      * (Re-)sets the game to its initial state.
      */
-    public void start() {
+    public void start() { //loading scores
         score.setText("Score: " + bj.getScores().get(0) 
                 + " Wins " + bj.getScores().get(1) + " Losses");
     }
 
     
-    public void hit() {
-        if (counter == 1) {
+    public void hit() { 
+        if (counter == 1) { //only hit if dealed
             bj.hit(name);
-            if (bj.checkBust(name)) {
+            if (bj.checkBust(name)) { //checking if they bust after each turn
                 stand();
             }
-            repaint();
+            repaint(); 
         }
     }
     
     public void stand() {
-        if (counter == 1) {
+        if (counter == 1) { //same as hit
             counter = 0;
-            drawCounter++;
-            bj.newHandDealer(dealer);
-            LinkedList<String> winAns = (LinkedList<String>) bj.winCheck();
+            drawCounter++; //dealer hand completely revealed
+            bj.newHandDealer(dealer); //hits aslong as <= 16 (keeping ace in mind)
+            LinkedList<String> winAns = (LinkedList<String>) bj.winCheck(); //returns both labels
             status.setText(winAns.get(0));
             score.setText(winAns.getLast());
-            bj.updateFile(username.toUpperCase());
+            bj.updateFile(username.toUpperCase()); //updating the file with new score
             repaint();
         }   
         
     }
     
     public void deal() {
-        counter++;
+        counter++; //hit and stand can now be used
         if (counter == 1) {
             bj.deal();
             status.setText("The dealer has a " + dealer.getCard(0).toString());
             if((name.getVal() == 11 && name.checkAce()) || (dealer.getVal() == 11 
-                    && dealer.checkAce())) {
+                    && dealer.checkAce())) { //checking if players start with blackjack -> auto over
                 stand();
             }
         }
@@ -146,15 +150,15 @@ public class GameBoard extends JPanel {
         super.paintComponent(g);
 
         // Draws board grid
-        g.drawLine(600, 0, 600, 1400);
+        g.drawLine(600, 0, 600, 1400); //middle line
         
-        g.drawString(username, 50, 50);
+        g.drawString(username, 50, 50); //user label
         
-        g.drawString("Dealer", 650, 50);
+        g.drawString("Dealer", 650, 50); //deal label
         
-        name.draw(g);
+        name.draw(g);                   //users cards
         if (drawCounter == 1) {
-            dealer.draw(g);
+            dealer.draw(g);             //rest of dealers card revealed after stand
             drawCounter = 0;
         }
         

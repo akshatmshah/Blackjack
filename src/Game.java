@@ -37,7 +37,7 @@ public class Game implements Runnable {
         frame.add(status_panel, BorderLayout.NORTH);
         final JLabel status = new JLabel();
         status_panel.add(status, BorderLayout.NORTH);
-        final JLabel score = new JLabel("High Score : 0 Wins 0 Loses");
+        final JLabel score = new JLabel();
         status_panel.add(score, BorderLayout.CENTER);
 
         // Game board
@@ -49,13 +49,11 @@ public class Game implements Runnable {
         frame.add(control_panel, BorderLayout.SOUTH);
 
 
-        // Note here that when we add an action listener to the reset button, we define it as an
-        // anonymous inner class that is an instance of ActionListener with its actionPerformed()
-        // method overridden. When the button is pressed, actionPerformed() will be called.
+        //all buttons needed for blackjack
         final JButton reset = new JButton("Deal");
         final JButton hit = new JButton("Hit");
         final JButton stand = new JButton("Stand");
-
+        
         reset.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e){
                 board.deal();
