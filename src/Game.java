@@ -1,3 +1,4 @@
+
 /**
  * CIS 120 HW09 - TicTacToe Demo
  * (c) University of Pennsylvania
@@ -11,17 +12,17 @@ import javax.swing.*;
 /**
  * This class sets up the top-level frame and widgets for the GUI.
  * 
- * This game adheres to a Model-View-Controller design framework.  This
- * framework is very effective for turn-based games.  We STRONGLY 
- * recommend you review these lecture slides, starting at slide 8, 
- * for more details on Model-View-Controller:  
+ * This game adheres to a Model-View-Controller design framework. This framework
+ * is very effective for turn-based games. We STRONGLY recommend you review
+ * these lecture slides, starting at slide 8, for more details on
+ * Model-View-Controller:
  * https://www.seas.upenn.edu/~cis120/current/files/slides/lec37.pdf
  * 
- * In a Model-View-Controller framework, Game initializes the view,
- * implements a bit of controller functionality through the reset
- * button, and then instantiates a GameBoard.  The GameBoard will
- * handle the rest of the game's view and controller functionality, and
- * it will instantiate a TicTacToe object to serve as the game's model.
+ * In a Model-View-Controller framework, Game initializes the view, implements a
+ * bit of controller functionality through the reset button, and then
+ * instantiates a GameBoard. The GameBoard will handle the rest of the game's
+ * view and controller functionality, and it will instantiate a TicTacToe object
+ * to serve as the game's model.
  */
 public class Game implements Runnable {
     public void run() {
@@ -45,35 +46,34 @@ public class Game implements Runnable {
         frame.add(board, BorderLayout.CENTER);
 
         // Reset button
-        JPanel control_panel = new JPanel();
-        frame.add(control_panel, BorderLayout.SOUTH);
+        JPanel controlPanel = new JPanel();
+        frame.add(controlPanel, BorderLayout.SOUTH);
 
-
-        //all buttons needed for blackjack
+        // all buttons needed for blackjack
         final JButton reset = new JButton("Deal");
         final JButton hit = new JButton("Hit");
         final JButton stand = new JButton("Stand");
-        
+
         reset.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e){
+            public void actionPerformed(ActionEvent e) {
                 board.deal();
             }
         });
-        
+
         hit.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e){
+            public void actionPerformed(ActionEvent e) {
                 board.hit();
             }
         });
-        
+
         stand.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e){
+            public void actionPerformed(ActionEvent e) {
                 board.stand();
             }
         });
-        control_panel.add(hit);
-        control_panel.add(stand);
-        control_panel.add(reset);
+        controlPanel.add(hit);
+        controlPanel.add(stand);
+        controlPanel.add(reset);
 
         // Put the frame on the screen
         frame.pack();
@@ -85,8 +85,9 @@ public class Game implements Runnable {
     }
 
     /**
-     * Main method run to start and run the game. Initializes the GUI elements specified in Game and
-     * runs it. IMPORTANT: Do NOT delete! You MUST include this in your final submission.
+     * Main method run to start and run the game. Initializes the GUI elements
+     * specified in Game and runs it. IMPORTANT: Do NOT delete! You MUST include
+     * this in your final submission.
      */
     public static void main(String[] args) {
         SwingUtilities.invokeLater(new Game());
