@@ -3,6 +3,10 @@ public class Card {
     private int value;
     private String suit;
     private String cardFace;
+    
+    public Card() {
+        suit = null;
+    }
 
     // card constructor
     public Card(String suit, String cardFace, int value) {
