@@ -20,20 +20,9 @@ PennKey: _______
   2. I created a highscores.txt file that tracks all the scores that registered players have. When
   the game is first started, it will check for a registered player and load their w/l. If a 
   player isn't within this file, then a new player with the score 0 - 0 (w/l respectively) will be
-  created. After each turn, a player's w/l is updated, so the player can quit whenever they want.
+  created. After each turn, a player's w/l is updated, so the player can quit whenever they want.  
 
-  3. I created an dynamic card class to represent each of the individual cards that a deck 
-  makes up. I can't simply create private instance variables for these cards because they have 
-  different information, although they are set up the same. A king will have the type of king, 
-  rank king, and value of 10, while another king could be the same rank (king) and value 
-  but be a different type (spade instead of heart).A private instance variable would not be capable 
-  of having all these different attributes that each card would have.
-  
-  I redesigned my GameBoard to work from the tictactoe completely so it works specifically for
-  my BlackJack game.
-  
-
-  4. I created a testable component that worked around the core game state (beating the dealer by
+  3. I created a testable component that worked around the core game state (beating the dealer by
   getting close to 21). I created methods that would draw specific cards in order to make sure I 
   could test how my game would function when presented different scenarios. I tested how the dealer
   reacted to hard 17s, win, lose, draw, blackjack off draw, updating scores, file loading, and
@@ -69,7 +58,7 @@ PennKey: _______
   game (related to your design, or otherwise)?
   
   I had a really hard time editing my high scores file. I struggled with this because I had to
-  take all the lines and rewrite them to a new file in order to be atomic. I also really struggled
+  take all the lines and rewrite them to a new file. I also really struggled
   with making sure that some classes only had methods and features unique to that class. I had
   to rewrite a lot of methods within my blackjack class because it would do things that my hand 
   class should only be able to do.
@@ -87,10 +76,10 @@ PennKey: _______
   uses the Cards. There is a clear order of heirarchy in which these different classes interact
   with another.
   
-  I think I did pretty good to make new that my private state was encapsulated. Whenever I would
+  I think I did pretty good to make sure that my private state was encapsulated. Whenever I would
   return a list I made sure to return a new linked list. I think my deck constructor could be 
   created in a more efficient process. I could not figure out what to do for this. So, if I could 
-  refactor I would think about this more.
+  refactor, I would think about this more.
 
 
 
